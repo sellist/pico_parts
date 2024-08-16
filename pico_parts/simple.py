@@ -1,8 +1,26 @@
-from machine import Timer, Pin, enable_irq, disable_irq
-from pico_parts.abstract import AbstractButton
+from machine import Timer, Pin, disable_irq, enable_irq
+import abstract
 
 
-class Button(AbstractButton):
+class LED(abstract.Light):
+
+    def __repr__(self):
+        return f"LED({self.led}, {self.led.value() == 1})"
+
+    def __init__(self, led_pin: int):
+        self.led = Pin(led_pin, Pin.OUT)
+
+    def on(self, *args):
+        self.led.on()
+
+    def off(self, *args):
+        self.led.off()
+
+    def toggle(self, *args):
+        self.led.value(not self.led.value())
+
+
+class Button(abstract.Button):
 
     def __repr__(self):
         return f"Button({self.button}, {self.button.value() == 0})"

@@ -1,10 +1,21 @@
 from abc import ABC, abstractmethod
 
 
-class Button(ABC):
+class Light(ABC):
+    @abstractmethod
+    def on(self, *args):
+        pass
 
-    def __init__(self):
-        self.callback = None
+    @abstractmethod
+    def off(self, *args):
+        pass
+
+    @abstractmethod
+    def toggle(self, *args):
+        pass
+
+
+class Button(ABC):
 
     @abstractmethod
     def is_pressed(self, *args):
