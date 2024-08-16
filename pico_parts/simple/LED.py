@@ -1,7 +1,8 @@
 from machine import Pin
+from pico_parts.abstract import AbstractLight
 
 
-class LED:
+class LED(AbstractLight):
 
     def __repr__(self):
         return f"LED({self.led}, {self.led.value() == 1})"
