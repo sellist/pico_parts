@@ -1,5 +1,6 @@
 from machine import Timer, Pin, disable_irq, enable_irq
-import abstract
+import abstract as abstract
+from pico_parts.drivers import tm1637
 
 
 class LED(abstract.Light):
@@ -57,3 +58,24 @@ class Button(abstract.Button):
         self.cooling_down = True
         self.timer.init(mode=Timer.ONE_SHOT, period=350, callback=self.__reset_cooldown)
 
+
+class TM1637NumberDisplay(abstract.SevenSegmentDisplay):
+
+    def __repr__(self):
+        return f"SevenSegmentDisplay({self.display})"
+
+    def __init__(self, clk_pin: int, dio_pin: int):
+        self.display = tm1637.TM1637(clk=Pin(clk_pin), dio=Pin(dio_pin))
+
+    @staticmethod
+    def __zfl(s, width):
+        return '{:0>{w}}'.format(s, w=width)
+
+    def update(self, digits: str):
+        self.display.show(self.__zfl(digits, 4))
+
+    def update_time(self, hours: int, minutes: int):
+        self.display.numbers(self.__zfl(str(hours), 2), self.__zfl(str(minutes), 2), colon=True)
+
+    def clear(self, *args):
+        self.display.show("0000")

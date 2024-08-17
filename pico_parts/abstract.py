@@ -1,50 +1,46 @@
-from abc import ABC, abstractmethod
+class Light:
 
-
-class Light(ABC):
-    @abstractmethod
     def on(self, *args):
         pass
 
-    @abstractmethod
     def off(self, *args):
         pass
 
-    @abstractmethod
     def toggle(self, *args):
         pass
 
 
-class Button(ABC):
+class Button:
 
-    @abstractmethod
     def is_pressed(self, *args):
         pass
 
-    @abstractmethod
     def on_press(self, *args):
         pass
 
-    @abstractmethod
     def is_released(self, *args):
         pass
 
-    @abstractmethod
     def __debounce(self):
         pass
 
-    @property
-    def callback(self):
+    def get_callback(self):
         return self.callback
 
-    @callback.setter
-    def callback(self, callback):
+    def set_callback(self, callback):
         self.callback = callback
 
-    @property
-    def pin(self):
+    def get_pin(self):
         return self.pin
 
-    @pin.setter
-    def pin(self, pin):
+    def set_pin(self, pin):
         self.pin = pin
+
+
+class SevenSegmentDisplay:
+
+    def update(self, *args):
+        pass
+
+    def clear(self, *args):
+        pass
