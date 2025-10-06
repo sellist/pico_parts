@@ -1,6 +1,6 @@
 from machine import Timer, Pin, disable_irq, enable_irq
 import abstract as abstract
-from pico_parts.drivers import tm1637
+import pico_parts.drivers.tm1637 as tm1637
 
 
 class LED(abstract.Light):
@@ -9,6 +9,7 @@ class LED(abstract.Light):
         return f"LED({self.led}, {self.led.value() == 1})"
 
     def __init__(self, led_pin: int):
+        super().__init__()
         self.led = Pin(led_pin, Pin.OUT)
 
     def on(self, *args):
@@ -27,6 +28,7 @@ class Button(abstract.Button):
         return f"Button({self.button}, {self.button.value() == 0})"
 
     def __init__(self, button_pin: int, callback=lambda: print("No callback set!")):
+        super().__init__()
         self.button = Pin(button_pin, Pin.IN)
         self.callback = callback
         self.button.irq(trigger=Pin.IRQ_FALLING, handler=self.on_press)
@@ -58,6 +60,9 @@ class Button(abstract.Button):
         self.cooling_down = True
         self.timer.init(mode=Timer.ONE_SHOT, period=350, callback=self.__reset_cooldown)
 
+    def press(self):
+        if self.callback:
+            self.callback()
 
 class TM1637NumberDisplay(abstract.SevenSegmentDisplay):
 
@@ -79,3 +84,7 @@ class TM1637NumberDisplay(abstract.SevenSegmentDisplay):
 
     def clear(self, *args):
         self.display.show("0000")
+
+
+if __name__ == "__main__":
+    print("This is a module, not a script.")
